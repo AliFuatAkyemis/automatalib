@@ -2,12 +2,13 @@ package com.alifuatakyemis.dfa;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.alifuatakyemis.core.Alphabet;
 
 public class DFA {
     private DFAState entry, accept;
-    private Map<String, DFAState> states;
     private Alphabet alphabet;
+    private Map<String, DFAState> states;
 
     public DFA() {
         this(new Alphabet());
