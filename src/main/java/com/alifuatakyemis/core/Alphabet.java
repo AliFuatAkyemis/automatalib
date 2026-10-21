@@ -6,6 +6,10 @@ import java.util.Set;
 public class Alphabet {
     private Set<Character> alphabet;
 
+    public Alphabet() {
+        this(new String());
+    }
+
     public Alphabet(String alphabet) {
         this.alphabet = new HashSet<>();
 
@@ -20,6 +24,13 @@ public class Alphabet {
 
     public int size() {
         return this.alphabet.size();
+    }
+
+    public boolean contains(Character ch) {
+        if (ch == null)
+            throw new IllegalArgumentException("Character cannot be null");
+
+        return this.alphabet.contains(ch);
     }
 
     public void addCharacter(Character ch) throws IllegalArgumentException {
