@@ -2,15 +2,22 @@ package com.alifuatakyemis.dfa;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.alifuatakyemis.core.Alphabet;
 
 public class DFA {
     private DFAState entry, accept;
     private Map<String, DFAState> states;
+    private Alphabet alphabet;
 
     public DFA() {
+        this(new Alphabet());
+    }
+
+    public DFA(Alphabet alphabet) {
+        this.states = new HashMap<>();
+        this.alphabet = alphabet;
         this.entry = null;
         this.accept = null;
-        this.states = new HashMap<>();
     }
 
     public boolean isEmpty() {
@@ -27,10 +34,21 @@ public class DFA {
         DFAState currentState = this.entry;
 
         for (char ch : chars) {
+            if (!alphabet.contains(ch))
+                throw new IllegalArgumentException("This character is not exist in alphabet");
+
             currentState = currentState.nextState(ch);
         }
 
         return (currentState != null && currentState == this.accept) ? true : false;
+    }
+
+    public void addCharacter(Character ch) {
+        this.alphabet.addCharacter(ch);
+    }
+
+    public void removeCharacter(Character ch) {
+        this.alphabet.removeCharacter(ch);
     }
 
     public void add(String label) throws IllegalArgumentException {
@@ -74,6 +92,9 @@ public class DFA {
         if (source == null || destination == null)
             throw new IllegalArgumentException(((source == null) ? "Source" : "Destination") + " cannot be null");
 
+        if (!this.alphabet.contains(ch))
+            throw new IllegalArgumentException("This character is not exist in alphabet");
+
         if (!this.states.containsKey(source) || !this.states.containsKey(destination))
             throw new IllegalArgumentException(
                     ((!this.states.containsKey(source) ? "Source" : "Destination") + " does not exist"));
@@ -84,6 +105,9 @@ public class DFA {
     public void removePath(String source, String destination, Character ch) throws IllegalArgumentException {
         if (source == null || destination == null)
             throw new IllegalArgumentException(((source == null) ? "Source" : "Destination") + " cannot be null");
+
+        if (!this.alphabet.contains(ch))
+            throw new IllegalArgumentException("This character is not exist in alphabet");
 
         if (!this.states.containsKey(source) || !this.states.containsKey(destination))
             throw new IllegalArgumentException(
